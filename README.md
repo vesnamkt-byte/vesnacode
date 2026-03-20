@@ -1,5 +1,4 @@
-[vercel.json](https://github.com/user-attachments/files/26130802/vercel.json)
-[Uploading verc{
+[index (2).html](https://github.com/user-attachments/files/26130848/index.2.html){
   "rewrites": [
     { "source": "/brands/:brand", "destination": "/brands/:brand/index.html" }
   ],
@@ -12,10 +11,9 @@
     }
   ]
 }
-el.json…]()
 
-[index (2).html](https://github.com/user-attachments/files/26130804/index.2.html)
-<!DOCTYPE html>
+[vercel.json](https://github.com/user-attachments/files/26130847/vercel.json)
+[Uploading<!DOCTYPE html>
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
@@ -285,8 +283,9 @@ el.json…]()
     }, { passive: true });
   </script>
 </body>
-</html[buena-salud.json](https://github.com/user-attachments/files/26130806/buena-salud.json)
->
+</html>
+ index (2).html…]()
+[buena-salud.json](https://github.com/user-attachments/files/26130849/buena-salud.json)
 {
   "brand": "Clínica Hogar Buena Salud",
   "tagline": "Donde la recuperación se convierte en un proceso real.",
@@ -341,8 +340,8 @@ el.json…]()
   "chartLabels": ["Mes 1", "Mes 2", "Mes 3", "Mes 4", "Mes 5", "Mes 6"],
   "chartSeguimientoOrganico": [800, 1600, 2900, 4500, 6200, 8000],
   "chartAlcancePagado": [2000, 5000, 9000, 14000, 20000, 28000]
-}[core.js](https://github.com/user-attachments/files/26130807/core.js)
-
+}
+[core.js](https://github.com/user-attachments/files/26130850/core.js)
 /* =============================================
    SHARED CORE JS — pitch-deck platform
    ============================================= */
@@ -492,159 +491,8 @@ window.PitchCore = {
   initNavDots,
   initReveal,
   loadData
-};[core.js](https://github.com/user-attachments/files/26130808/core.js)
-
-/* =============================================
-   SHARED CORE JS — pitch-deck platform
-   ============================================= */
-
-/* ---------- Progress Bar ---------- */
-function initProgressBar() {
-  const bar = document.getElementById('progress-bar');
-  if (!bar) return;
-  window.addEventListener('scroll', () => {
-    const scrollTop = window.scrollY;
-    const docHeight = document.documentElement.scrollHeight - window.innerHeight;
-    bar.style.width = (scrollTop / docHeight * 100) + '%';
-  }, { passive: true });
-}
-
-/* ---------- Animated Counter ---------- */
-function animateCounter(el) {
-  const target = parseFloat(el.dataset.target) || 0;
-  const suffix = el.dataset.suffix || '';
-  const duration = 2.0;
-  gsap.fromTo(
-    el,
-    { innerText: 0 },
-    {
-      innerText: target,
-      duration,
-      ease: 'power3.out',
-      snap: { innerText: target > 100 ? 50 : 1 },
-      onUpdate() {
-        const v = Math.round(parseFloat(this.targets()[0].innerText));
-        this.targets()[0].innerText = v.toLocaleString('es-CL') + suffix;
-      },
-      onComplete() {
-        el.innerText = target.toLocaleString('es-CL') + suffix;
-      }
-    }
-  );
-}
-
-function initCounters() {
-  const els = document.querySelectorAll('[data-counter]');
-  if (!els.length) return;
-
-  els.forEach(el => {
-    ScrollTrigger.create({
-      trigger: el,
-      start: 'top 85%',
-      once: true,
-      onEnter: () => animateCounter(el)
-    });
-  });
-}
-
-/* ---------- Video Autoplay on viewport ---------- */
-function initVideoAutoplay() {
-  const videos = document.querySelectorAll('.phone__screen video, [data-autoplay]');
-  if (!videos.length) return;
-
-  const obs = new IntersectionObserver((entries) => {
-    entries.forEach(e => {
-      if (e.isIntersecting) {
-        e.target.play().catch(() => {});
-      } else {
-        e.target.pause();
-      }
-    });
-  }, { threshold: 0.3 });
-
-  videos.forEach(v => {
-    v.muted = true;
-    v.loop = true;
-    v.playsInline = true;
-    obs.observe(v);
-  });
-}
-
-/* ---------- Hover video cards ---------- */
-function initHoverVideos() {
-  document.querySelectorAll('[data-hover-video]').forEach(card => {
-    const video = card.querySelector('video');
-    if (!video) return;
-    video.muted = true; video.loop = true; video.playsInline = true;
-    card.addEventListener('mouseenter', () => video.play().catch(() => {}));
-    card.addEventListener('mouseleave', () => { video.pause(); video.currentTime = 0; });
-  });
-}
-
-/* ---------- Nav Dots ---------- */
-function initNavDots(sections) {
-  const container = document.getElementById('nav-dots');
-  if (!container || !sections.length) return;
-
-  sections.forEach((sec, i) => {
-    const dot = document.createElement('button');
-    dot.className = 'nav-dot';
-    dot.setAttribute('aria-label', `Ir a sección ${i + 1}`);
-    dot.addEventListener('click', () => sec.scrollIntoView({ behavior: 'smooth' }));
-    container.appendChild(dot);
-
-    ScrollTrigger.create({
-      trigger: sec,
-      start: 'top center',
-      end: 'bottom center',
-      onToggle: self => {
-        dot.classList.toggle('active', self.isActive);
-      }
-    });
-  });
-}
-
-/* ---------- Reveal on scroll (non-pinned sections) ---------- */
-function initReveal() {
-  document.querySelectorAll('.reveal').forEach(el => {
-    gsap.fromTo(el,
-      { opacity: 0, y: 40 },
-      {
-        opacity: 1, y: 0,
-        duration: 0.9,
-        ease: 'power3.out',
-        scrollTrigger: {
-          trigger: el,
-          start: 'top 85%',
-          once: true
-        }
-      }
-    );
-  });
-}
-
-/* ---------- Load JSON data ---------- */
-async function loadData(path) {
-  try {
-    const res = await fetch(path);
-    return await res.json();
-  } catch (e) {
-    console.warn('Could not load data:', path, e);
-    return null;
-  }
-}
-
-/* ---------- Export ---------- */
-window.PitchCore = {
-  initProgressBar,
-  initCounters,
-  initVideoAutoplay,
-  initHoverVideos,
-  initNavDots,
-  initReveal,
-  loadData
-};[base.css](https://github.com/user-attachments/files/26130810/base.css)
-
+};
+[base.css](https://github.com/user-attachments/files/26130851/base.css)
 /* =============================================
    SHARED BASE CSS — pitch-deck platform
    ============================================= */
@@ -1023,8 +871,8 @@ a { color: inherit; text-decoration: none; }
 /* ---------- Glow effect ---------- */
 .glow {
   box-shadow: 0 0 40px rgba(0,229,204,0.15), 0 0 80px rgba(0,229,204,0.05);
-}[main.js](https://github.com/user-attachments/files/26130813/main.js)
-
+}
+[main.js](https://github.com/user-attachments/files/26130852/main.js)
 /* =============================================
    MAIN JS — Clínica Hogar Buena Salud
    ============================================= */
@@ -1329,8 +1177,8 @@ async function init() {
   });
 }
 
-document.addEventListener('DOMContentLoa[theme.css](https://github.com/user-attachments/files/26130815/theme.css)
-ded', init);
+document.addEventListener('DOMContentLoaded', init);
+[theme.css](https://github.com/user-attachments/files/26130853/theme.css)
 /* =============================================
    THEME — Clínica Hogar Buena Salud
    Estética: Médica de alta tecnología.
@@ -1665,7 +1513,8 @@ body {
 @media (max-width: 768px) {
   .hero__title { font-size: clamp(2.2rem, 10vw, 3.5rem); }
   .price-card { padding: 2rem 1.5rem; }
-}[index (1).html](https://github.com/user-attachments/files/26130816/index.1.html)
+}
+[index (1).html](https://github.com/user-attachments/files/26130855/index.1.html)
 <!DOCTYPE html>
 <html lang="es">
 <head>
